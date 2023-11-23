@@ -1,3 +1,5 @@
+package com.ssafy.algo1123;
+
 import static java.lang.Integer.parseInt;
 
 import java.io.BufferedReader;
@@ -6,13 +8,19 @@ import java.io.InputStreamReader;
 import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.StringTokenizer;
+/**
+ * 문제 : BJ_9019_DSLR
+ * 설명 : bfs로 풀고 이제 command()안에 "D", "S", "L", "R" 총 4가지 상황을 넣어서 계산하면 된다. 
+ * @author 나종현
+ *
+ */
 
-public class Main {
+public class BJ_9019_DSLR_나종현 {
 	static int A, B;
-	static String[] commends = {"D", "S", "L", "R"};
+	static String[] commands = {"D", "S", "L", "R"};
 	static StringBuilder sb;
 	
-	private static int commend(int num, String c) {
+	private static int command(int num, String c) {
 		int result = 0;
 		if(c.equals("D")) {
 			result = (num * 2) % 10000;
@@ -53,13 +61,13 @@ public class Main {
 			}
 			
 			for(int c=0; c<4; c++) {
-				int nextNum = commend(nowNum, commends[c]);
+				int nextNum = command(nowNum, commands[c]);
 				
 				if(isChecked[nextNum]) {
 					continue;
 				}
 				q.offer(nextNum);
-				stringQ.offer(nowCommend + commends[c]);
+				stringQ.offer(nowCommend + commands[c]);
 				isChecked[nextNum] = true;
 			}
 		}
