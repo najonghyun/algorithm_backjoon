@@ -1,5 +1,3 @@
-package com.ssafy.algo1123;
-
 import static java.lang.Integer.parseInt;
 
 import java.io.BufferedReader;
@@ -15,7 +13,7 @@ import java.util.StringTokenizer;
  *
  */
 
-public class BJ_9019_DSLR_나종현 {
+public class Main {
 	static int A, B;
 	static String[] commands = {"D", "S", "L", "R"};
 	static StringBuilder sb;
