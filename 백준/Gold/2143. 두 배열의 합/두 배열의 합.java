@@ -1,14 +1,22 @@
+package com.daily_0401;
+
 import static java.lang.Integer.parseInt;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.StringTokenizer;
-
-public class Main {
+/**
+ * 문제 : BJ_2143_두배열의합
+ * 설명 : 이거 그냥 하면 정렬이 안되니깐 투포인터 못써서 그럼 방법이 부분합 집합을 리스트에 담아주고 그걸 정렬한 다음
+ * 투포인터 진행하면 쉽게 해결 가능!
+ * 
+ * @author 나종현
+ *
+ */
+public class BJ_2143_두배열의합_나종현 {
 	static int T, n, m;
 	static int[] A;
 	static int[] B;
@@ -22,7 +30,6 @@ public class Main {
 		
 		while(pa < listA.size() && pb >= 0) {
 			long sum = listA.get(pa)+listB.get(pb);
-//			System.out.println("sum : " + sum);
 			if(sum > T) {
 				pb--;
 			}else if(sum < T) {
@@ -40,7 +47,6 @@ public class Main {
 					bCnt++;
 					pb--;
 				}
-//				System.out.println(aCnt + " " + bCnt);
 				count = count + (aCnt*bCnt);
 			}
 		}
@@ -87,14 +93,6 @@ public class Main {
 		
 		
 		twoPointer();
-//		for(int i : listA) {
-//			System.out.print(i + " ");
-//		}
-//		System.out.println("------------------");
-//		for(int i : listB) {
-//			System.out.print(i + " ");
-//		}
-//		System.out.println("------------------");
 		System.out.println(count);
 		
 	}
