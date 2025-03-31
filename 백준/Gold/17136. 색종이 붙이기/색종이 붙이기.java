@@ -4,7 +4,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.StringTokenizer;
-
+/**
+ * 제목 : 색종이붙이기
+ * 설명 : 백트래킹 인데 2차원이면 x축 주의
+ * @author 나종현
+ *
+ */
 public class Main {
 	static int[][] paper;
 	static boolean[][] visited;
@@ -24,6 +29,7 @@ public class Main {
 		return true;
 	}
 	
+	// 붙이기(방문체크)
 	public static void stick(int y, int x, int size) {
 		for(int i=y; i<y+size; i++) {
 			for(int j=x; j<x+size; j++) {
@@ -32,6 +38,7 @@ public class Main {
 		}
 	}
 	
+	// 떼기 (방문체크 해제)
 	public static void reStick(int y, int x, int size) {
 		for(int i=y; i<y+size; i++) {
 			for(int j=x; j<x+size; j++) {
@@ -40,9 +47,10 @@ public class Main {
 		}
 	}
 	
+	// 백트래킹 (x축 주의)
 	public static void backtracking(int y, int x, int num, int count) {
 		
-		if(count == 0) { // 기저조건 : 나와있는 것은 모두 돌았을 때 
+		if(count == 0) { // 기저조건 : 1인 부분을 세서 그거 만큼 돌았을 때 
 			result = Math.min(result, num);
 			return;
 		}
