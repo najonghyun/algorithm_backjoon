@@ -19,18 +19,36 @@ public class Main {
 	static StringBuilder sb;
 	static int INF = Integer.MAX_VALUE / 2;
 	
-	public static void parade() {
+	// copy(): 새로운 배열로 복사 (이 때 플로이드 워샬 인접행렬로 초기화)
+	public static void copy(int[][] newArray, int [][] array) {
+		for(int i=0; i<N; i++) {
+			for(int j=0; j<N; j++) {
+				if(i == j) {
+					newArray[i][j] = 0;
+				}else if(array[i][j] != 0) {
+					newArray[i][j] = array[i][j];					
+				}else {
+					newArray[i][j] = INF;
+				}
+			}
+		}
+	}
+	
+	// minDistance(adjMat): 플로이드 워샬로 인접행렬 최소 거리 구하기 
+	public static void minDistance(int[][] adjMat) {
 		for(int k=0; k<N; k++) {
 			for(int i=0; i<N; i++) {
 				if(k == i) continue;
 				for(int j=0; j<N; j++) {
 					if(j == k || j == i) continue;
-					onAdjMat[i][j] = Math.min(onAdjMat[i][j], onAdjMat[i][k] + onAdjMat[k][j]);
-					offAdjMat[i][j] = Math.min(offAdjMat[i][j], offAdjMat[i][k] + offAdjMat[k][j]);
+					adjMat[i][j] = Math.min(adjMat[i][j], adjMat[i][k] + adjMat[k][j]);
 				}
 			}
 		}
-		
+	}
+	
+	// affectCount(): 영향 끼친 도로 개수 구하는 함수
+	public static void affectCount() {
 		int result = 0;
 		for(int i=0; i<N; i++) {
 			for(int j=i; j<N; j++) {
@@ -41,21 +59,6 @@ public class Main {
 			}
 		}
 		sb.append(result);
-		
-	}
-	
-	public static void copy(int[][] array1, int [][] array2) {
-		for(int i=0; i<N; i++) {
-			for(int j=0; j<N; j++) {
-				if(i == j) {
-					array1[i][j] = 0;
-				}else if(array2[i][j] != 0) {
-					array1[i][j] = array2[i][j];					
-				}else {
-					array1[i][j] = INF;
-				}
-			}
-		}
 	}
 	
 	public static void main(String[] args) throws IOException {
@@ -63,7 +66,7 @@ public class Main {
 		StringTokenizer st = new StringTokenizer(in.readLine(), " ");
 		N = parseInt(st.nextToken());
 		M = parseInt(st.nextToken());
-		int[][] order = new int[M][2];
+		int[][] order = new int[M][2]; // order: 순서 넣어주는 배열(0: from, 1: to)
 		adjMatrix = new int[N][N];
 		onAdjMat = new int[N][N];
 		offAdjMat = new int[N][N];
@@ -79,13 +82,17 @@ public class Main {
 			order[i][1] = to;
 		}
 		
-		for(int i=0; i<M; i++) {
+		// 퍼레이드 도로 없는 일반 배열 복사 후 최소 경로 미리 구하기
+		copy(offAdjMat, adjMatrix);
+		minDistance(offAdjMat);
+		
+		for(int i=0; i<M; i++) { // 퍼레이드 도로 하나씩 수행
 			int from = order[i][0];
 			int to = order[i][1];
 			copy(onAdjMat, adjMatrix);
 			onAdjMat[from][to] = onAdjMat[to][from] = INF;
-			copy(offAdjMat, adjMatrix);
-			parade();
+			minDistance(onAdjMat);
+			affectCount();
 			if(i == M-1) break;
 			sb.append(" ");
 		}
