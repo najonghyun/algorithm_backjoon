@@ -1,5 +1,14 @@
 import java.util.*;
-
+/**
+* 제목 : 충돌위험 찾기
+* 설명 : 주의할 점은 로봇 이동 시 중복이 가능함! 그래서 맵으로 그려하면서 하면 안됌!
+* + 충돌하는 것도 똑같은 곳에서 충돌하더라도 다른 시간이면 그 충돌 값도 더해야 됨! 그래서 좌표 방문으로 처리하면 안됌!
+* 1. 그래서 각 이동한 물류의 시간과 위치를 Queue에 다 넣어놓는다.
+* 2. Queue에서 하나씩 빼면서 Set에 넣어주면서 중복되는 값은 새 set에 넣어준다(중복이 2개 이상 있으므로 한번만 더하기 위해)
+* 3. 새로운 set을 이제 확인해보면 중복된 좌표 단 1개씩만 남는다. 그래서 그 size()를 출력해주면 된다.
+*
+* author: 나종현
+*/
 class Solution {
     public int solution(int[][] points, int[][] routes) {
         int answer = 0;
@@ -50,11 +59,12 @@ class Solution {
             String temp = r + "," + c + "," + value;
             if(set.contains(temp)){
                 cashed.add(temp);
+            }else{
+                set.add(temp);     
             }
-            set.add(temp);     
         }
         answer = cashed.size();
-       
+        
         return answer;
     }
 }
