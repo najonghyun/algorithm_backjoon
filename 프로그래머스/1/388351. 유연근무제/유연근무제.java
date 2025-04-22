@@ -1,3 +1,9 @@
+/**
+* 문제 : 유연근무제
+* 설명 : 그냥 10분 더했을때 시분만 잘 업데이트 해주면 된다!
+*
+* @author 나종현
+*/
 class Solution {
     public boolean isSave(int time, int targetTime) {
         int endTime = time+10;
