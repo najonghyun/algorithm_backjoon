@@ -4,7 +4,9 @@ const input = fs.readFileSync(filePath).toString().trim().split("\n");
 const dirY = [0, 1, 0, -1];
 const dirX = [1, 0, -1, 0];
 let result;
-
+/**
+ * 설명 : 시간초과가 나지 않기 때문에 백트래킹을 써야한다. 그리고 뽑았으면 그게 전부 연결되어 있는지 여부는 bfs로 했다.
+ */
 function include(arr, targetY, targetX) {
     for (let i = 0; i < arr.length; i++) {
         const [y, x] = arr[i];
