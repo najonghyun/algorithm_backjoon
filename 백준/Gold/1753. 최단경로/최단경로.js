@@ -52,7 +52,7 @@ function dijkstra(V, adjList, start) {
   pq.push([distance[start], start]);
   while (pq.size() > 0) {
     const [min, current] = pq.pop();
-    // if (min > distance[current]) continue; // 중복 제거 (방문체크 대신)
+    if (min > distance[current]) continue; // 중복 제거 (방문체크 대신)
     for (const { next, length } of adjList[current] ?? []) {
       if (distance[next] > min + length) {
         distance[next] = min + length;
@@ -69,12 +69,7 @@ const solution = () => {
   for (let i = 0; i < E; i++) {
     const [u, v, w] = input[i + 2].split(' ').map(Number);
     if (!adjList[u]) adjList[u] = [];
-    // const same = adjList[u].find((l) => l.next === v);
-    // if (adjList[u].find((item) => item[0] === v)) {
-    //   same.length = Math.min(same.length, w);
-    // } else {
     adjList[u].push({ next: v, length: w });
-    // }
   }
   const distance = dijkstra(V, adjList, K);
   for (let i = 1; i <= V; i++) {
