@@ -45,7 +45,7 @@ class PriorityQueue {
     }
 }
 
-function dijkstra(N, adjList, start, end, set = null) {
+function dijkstra(N, adjList, start, end) {
     const distance = Array.from({ length: N }, () => ({ cost: INF, prev: [] }));
     const pq = new PriorityQueue();
     distance[start].cost = 0;
@@ -54,7 +54,7 @@ function dijkstra(N, adjList, start, end, set = null) {
         const [currCost, current] = pq.pop();
         if (currCost !== distance[current].cost) continue;
         for (const { next, length } of adjList[current] ?? []) {
-            if (set && set.has(String(current) + "#" + String(next))) continue;
+            // if (set && set.has(String(current) + "#" + String(next))) continue;
             if (distance[next].cost > currCost + length) {
                 distance[next].cost = currCost + length;
                 distance[next].prev = [current];
@@ -91,12 +91,11 @@ const solution = () => {
             q.push([i, D]);
         }
 
-        const set = new Set();
         const visited = {};
         while (q.length > 0) {
             const [start, end] = q.shift();
-            // resultAdjList[start] = resultAdjList[start].filter((v) => v.next !== end);
-            set.add(String(start) + "#" + String(end));
+            resultAdjList[start] = resultAdjList[start].filter((v) => v.next !== end);
+
             for (const i of distance[start].prev) {
                 if (visited[String(i) + "#" + String(start)]) continue;
                 q.push([i, start]);
@@ -104,7 +103,7 @@ const solution = () => {
             }
         }
         // console.log(resultAdjList);
-        const resultDistance = dijkstra(N, resultAdjList, S, D, set);
+        const resultDistance = dijkstra(N, resultAdjList, S, D);
         answer.push(resultDistance[D].cost === INF ? -1 : resultDistance[D].cost);
     }
     console.log(answer.join("\n"));
