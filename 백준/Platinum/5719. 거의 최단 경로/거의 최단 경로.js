@@ -2,6 +2,10 @@ const fs = require("fs");
 const filePath = process.platform === "linux" ? "/dev/stdin" : "./input.txt";
 const input = fs.readFileSync(filePath).toString().trim().split(/\r?\n/);
 const INF = 5e5;
+/**
+ * 설명 : 이거는 경로를 다 저장해야 하는데 중복 없는 경로 저장은 경로를 한번에 저장할 수 있지만 여러개 있는 경우는 prev를 배열로 저장해서 이제 큐로
+ * 경로를 하나씩 빼는 식으로 풀어야 한다.
+ */
 class PriorityQueue {
     constructor() {
         this.heap = [];
@@ -45,7 +49,7 @@ class PriorityQueue {
     }
 }
 
-function dijkstra(N, adjList, start, end) {
+function dijkstra(N, adjList, start) {
     const distance = Array.from({ length: N }, () => ({ cost: INF, prev: [] }));
     const pq = new PriorityQueue();
     distance[start].cost = 0;
@@ -54,7 +58,6 @@ function dijkstra(N, adjList, start, end) {
         const [currCost, current] = pq.pop();
         if (currCost !== distance[current].cost) continue;
         for (const { next, length } of adjList[current] ?? []) {
-            // if (set && set.has(String(current) + "#" + String(next))) continue;
             if (distance[next].cost > currCost + length) {
                 distance[next].cost = currCost + length;
                 distance[next].prev = [current];
@@ -75,35 +78,30 @@ const solution = () => {
         if (N === 0 && M === 0) break;
         const [S, D] = input[index++].split(" ").map(Number);
         const adjList = {};
-        const resultAdjList = {};
         for (let i = index; i < index + M; i++) {
             const [u, v, p] = input[i].split(" ").map(Number);
             if (!adjList[u]) adjList[u] = [];
-            if (!resultAdjList[u]) resultAdjList[u] = [];
             adjList[u].push({ next: v, length: p });
-            resultAdjList[u].push({ next: v, length: p });
         }
         index = index + M;
-        // console.log(adjList);
-        const distance = dijkstra(N, adjList, S, D);
+
+        const distance = dijkstra(N, adjList, S);
         const q = [];
         for (const i of distance[D].prev) {
             q.push([i, D]);
         }
-
         const visited = {};
         while (q.length > 0) {
             const [start, end] = q.shift();
-            resultAdjList[start] = resultAdjList[start].filter((v) => v.next !== end);
-
+            adjList[start] = adjList[start].filter((v) => v.next !== end);
             for (const i of distance[start].prev) {
-                if (visited[String(i) + "#" + String(start)]) continue;
+                const key = String(i) + " " + String(start);
+                if (visited[key]) continue;
                 q.push([i, start]);
-                visited[String(i) + "#" + String(start)] = true;
+                visited[key] = true;
             }
         }
-        // console.log(resultAdjList);
-        const resultDistance = dijkstra(N, resultAdjList, S, D);
+        const resultDistance = dijkstra(N, adjList, S);
         answer.push(resultDistance[D].cost === INF ? -1 : resultDistance[D].cost);
     }
     console.log(answer.join("\n"));
