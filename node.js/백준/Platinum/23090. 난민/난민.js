@@ -1,7 +1,10 @@
 const fs = require("fs");
 const filePath = process.platform === "linux" ? "/dev/stdin" : "./input.txt";
 const input = fs.readFileSync(filePath).toString().trim().split(/\r?\n/);
-const INF = Number.MAX_VALUE;
+/**
+ * 설명 : x좌표는 그냥 합치면 되지만 이 문제의 핵심은 y좌표에 달려있다. y좌표에서 양쪽을 균등하게 나눠야만 
+ * y값 역시 최소로 구할 수 있다. 그래서 y좌표의 기준값을 기준으로 양쪽에 최소힙과 최대힙 값을 넣어주고 그것을 기준으로 합을 계산했다.
+ */
 class MinPriorityQueue {
     constructor() {
         this.heap = [];
