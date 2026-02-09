@@ -3,7 +3,6 @@ const filePath = process.platform === "linux" ? "/dev/stdin" : "./input.txt";
 const input = fs.readFileSync(filePath).toString().trim().split(/\r?\n/);
 const dirY = [-1, 0, 1, 0];
 const dirX = [0, 1, 0, -1]; // 0:북 1:동 2:남 3:서
-let count;
 
 function isRange(n, m, y, x) {
     if (y >= n || y < 0 || x >= m || x < 0) {
@@ -12,32 +11,40 @@ function isRange(n, m, y, x) {
     return true;
 }
 
-function dfs(n, m, room, isCleaned, r, c, d) {
-    if (!isCleaned[r][c]) {
-        isCleaned[r][c] = true;
-        count++;
-    }
-
-    let isMove = false;
-    for (let i = 1; i <= 4; i++) {
-        const nextD = (d - i + 4) % 4;
-        const nextR = r + dirY[nextD];
-        const nextC = c + dirX[nextD];
-        if (!isRange(n, m, nextR, nextC)) continue;
-        if (isCleaned[nextR][nextC] || room[nextR][nextC] === 1) continue;
-        dfs(n, m, room, isCleaned, nextR, nextC, nextD);
-        isMove = true;
-        break;
-    }
-    if (!isMove) {
-        const backD = (d + 2) % 4;
-        const nextR = r + dirY[backD];
-        const nextC = c + dirX[backD];
-        if (isRange(n, m, nextR, nextC) && room[nextR][nextC] !== 1) {
-            dfs(n, m, room, isCleaned, nextR, nextC, d);
+function bfs(n, m, room, r, c, d) {
+    let count = 1;
+    const q = [];
+    const visited = Array.from({ length: n }, () => new Array(m).fill(false));
+    q.push([r, c, d]);
+    visited[r][c] = true;
+    while (q.length > 0) {
+        const [nowY, nowX, nowD] = q.shift();
+        let isMove = false;
+        for (let d = 1; d <= 4; d++) {
+            const nextD = (nowD - d + 4) % 4;
+            // console.log(tempD)
+            const nextY = nowY + dirY[nextD];
+            const nextX = nowX + dirX[nextD];
+            if (!isRange(n, m, nextY, nextX)) continue;
+            if (visited[nextY][nextX] || room[nextY][nextX] === 1) continue;
+            q.push([nextY, nextX, nextD]);
+            visited[nextY][nextX] = true;
+            count++;
+            isMove = true;
+            break;
         }
+        if (!isMove) {
+            const backD = (nowD + 2) % 4;
+            const nextY = nowY + dirY[backD];
+            const nextX = nowX + dirX[backD];
+            if (isRange(n, m, nextY, nextX) && room[nextY][nextX] !== 1) {
+                q.push([nextY, nextX, nowD]);
+            }
 
+        }
     }
+    // console.log(visited.join("\n"));
+    return count;
 }
 
 const solution = () => {
@@ -49,9 +56,7 @@ const solution = () => {
     }
     // console.log(room.join("\n"));
 
-    const isCleaned = Array.from({ length: N }, () => new Array(M).fill(false));
-    count = 0;
-    dfs(N, M, room, isCleaned, r, c, d);
-    console.log(count);
+    const result = bfs(N, M, room, r, c, d);
+    console.log(result);
 };
 solution();
