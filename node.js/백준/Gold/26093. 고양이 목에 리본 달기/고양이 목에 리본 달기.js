@@ -1,7 +1,11 @@
 const fs = require("fs");
 const filePath = process.platform === "linux" ? "/dev/stdin" : "./input.txt";
 const input = fs.readFileSync(filePath).toString().trim().split(/\r?\n/);
-
+/**
+ * 설명 : 일단 dp로 해야하는데 dp[n][j] = dp[n-1][j가 아닌값] + cats[i][j]
+ * 이 성립하는데 저 j가 아닌 값을 모두 구하면 시간초과가 난다. 그래서 그중에 최대 2개만 구해서 가장 최대값이 현재 j로 끝나는거면 가장 최대값 
+ * 아니면 그다음 최대값을 넣어주면 된다.
+ */
 const solution = () => {
     const [n, k] = input[0].split(" ").map(Number);
     const cats = Array.from({ length: n }, () => new Array(k));
