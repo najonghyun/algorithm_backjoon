@@ -3,12 +3,12 @@ const filePath = process.platform === "linux" ? "/dev/stdin" : "./input.txt";
 const input = fs.readFileSync(filePath).toString().trim().split(/\r?\n/);
 const INF = Number.MAX_VALUE;
 let result;
-
+/**
+ * 설명 : 일단 문제 조건이 하나씩 다 해봐도 괜찮은 범위에 변수가 많아서 브루트포스로 조건에 맞게 모든 곳을 다 탐색했다.
+ */
 function dfs(N, H, adjList, start, nowY, nowX, count) {
-    if (count > 3) {
-        // console.log("카운트 초과");
-        return;
-    }
+    if (count > 3) return;
+
     for (let i = start; i <= N; i++) {
         for (let j = nowY; j <= H; j++) {
             if (j === 0) {
@@ -38,7 +38,6 @@ function dfs(N, H, adjList, start, nowY, nowX, count) {
         }
         nowY = 0;
         if (nowX !== i) return;
-        // console.log(i, "일치");
     }
     result = Math.min(result, count);
 }
@@ -51,11 +50,6 @@ const solution = () => {
         adjList[0][a][b] = true;
         adjList[1][a][b + 1] = true;
     }
-
-    // console.log(adjList[0].join("\n"));
-    // console.log();
-    // console.log(adjList[1].join("\n"));
-    // console.log();
 
     result = INF;
     dfs(N, H, adjList, 1, 0, 0, 0);
