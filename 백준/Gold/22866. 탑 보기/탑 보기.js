@@ -1,9 +1,9 @@
 const fs = require("fs");
 const filePath = process.platform === "linux" ? "/dev/stdin" : "./input.txt";
 const input = fs.readFileSync(filePath).toString().trim().split(/\r?\n/);
-const INF = Number.MAX_VALUE;
 /**
- * 설명 : stack을 이용해
+ * 설명 : stack을 이용해 거꾸로 적용했고, 왼쪽 뷰와 오른쪽 뷰를 나누어 계산했다.
+ * 각각의 차이와 그때의 값, 총 개수를 객체로 저장해 놓고, 그 후 조건에 따라 출력했다. (N이 큰 출력은 배열이나 문자열로 저장하고 한번에 출력!)
  */
 function calculate(stack, now) {
     const size = stack.length;
