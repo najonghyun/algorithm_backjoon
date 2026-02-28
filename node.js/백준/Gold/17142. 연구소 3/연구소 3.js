@@ -5,7 +5,12 @@ const INF = Number.MAX_VALUE;
 const dirY = [-1, 1, 0, 0];
 const dirX = [0, 0, 1, -1];
 let result;
-
+/**
+ * 설명: 조합이랑 bfs 문제인데 조건 조심해야함.
+ * 1. 비활성 바이러스는 지나갈 수 있음
+ * 2. 빈것만 모두 방문하면 끝내야 최소 시간 구할 수 있음
+ * 3. 빈게 없으면 그냥 0 출력
+ */
 function bfs(n, map, active, emptyCount) {
     const q = [];
     const visited = Array.from({ length: n }, () => new Array(n).fill(false));
@@ -36,21 +41,17 @@ function bfs(n, map, active, emptyCount) {
             if (map[nextY][nextX] !== 2) {
                 count++;
                 if (count === emptyCount) {
-                    return time+1;
+                    return time + 1;
                 }
             }
         }
     }
-    // console.log(emptyCount, count);
-
     return emptyCount === count ? minTime : INF;
 }
 
 function comb(n, m, size, map, virus, active, emptyCount, cnt, start) {
     if (cnt === m) {
         const time = bfs(n, map, active, emptyCount);
-        // console.log(active);
-        // console.log(time);
         result = Math.min(result, time);
         return;
     }
@@ -77,8 +78,7 @@ const solution = () => {
             }
         }
     }
-    // console.log(map.join("\n"));
-    // console.log(virus);
+
     const active = new Array(M);
     result = INF;
     if (emptyCount === 0) {
