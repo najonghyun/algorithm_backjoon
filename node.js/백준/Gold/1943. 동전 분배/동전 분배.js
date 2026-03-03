@@ -1,7 +1,10 @@
 const fs = require("fs");
 const filePath = process.platform === "linux" ? "/dev/stdin" : "./input.txt";
 const input = fs.readFileSync(filePath).toString().trim().split(/\r?\n/);
-
+/**
+ * 설명 : 동전들로 합계의 절반을 만들 수 있는지 판별하면 된다.
+ * 판별은 dp를 이용한다. dp[만들 수 있는 수] = true/false, 중복 없애기 위해 반대로 한다. 
+ */
 const solution = () => {
     let index = 0;
     for (t = 0; t < 3; t++) {
@@ -18,7 +21,7 @@ const solution = () => {
             console.log(0);
             continue;
         }
-        
+
         const target = total / 2;
         const dp = new Array(target + 1).fill(false);
         dp[0] = true;
