@@ -2,10 +2,7 @@ const fs = require("fs");
 const filePath = process.platform === "linux" ? "/dev/stdin" : "./input.txt";
 const input = fs.readFileSync(filePath).toString().trim().split(/\r?\n/);
 let count;
-/**
- * 이 문제는 경로를 이용하는 문제라 플로이드 워샬로도 가능하지만 o(N^3)로 시간초과가 난다. 그래서 문제에 쿼리에
- * 시작지점부터 갈 수있는 곳의 개수를 구하는 방식으로 한다면 o(NQ)의 시간복잡도로 해결 가능하다. 
- */
+
 function dfs(adjList, visited, now, k) {
     for (const [next, nextR] of adjList[now]) {
         if (visited[next]) continue;
@@ -39,6 +36,7 @@ const solution = () => {
         result.push(count);
     }
 
+    // console.log(adjList);
     console.log(result.join("\n"));
 
 };
