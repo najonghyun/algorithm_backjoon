@@ -2,6 +2,16 @@ const fs = require("fs");
 const filePath = process.platform === "linux" ? "/dev/stdin" : "./input.txt";
 const input = fs.readFileSync(filePath).toString().trim().split(/\r?\n/);
 const INF = Number.MAX_VALUE;
+/**
+ * 설명 : 이 문제를 보면 a 배열의 각 인덱스가 하나의 node 역할을 한다.
+ * 각 위치 i에서 i ± a[i]로 이동할 수 있으므로 이를 그래프의 간선으로 볼 수 있다.
+ * 
+ * 이때 어떤 위치에서 한 번 이동했을 때 수열 바깥으로 나가면 그 시간은 b[i]로 바로 구해진다.
+ * 그래서 이런 노드들을 outside로 바로 나갈 수 있는 시작점으로 볼 수 있다.
+ * 우리는 x → outside 최소 시간을 구해야 하므로 간선 방향을 뒤집어 그래프를 만든다.
+ * 그리고 outside로 바로 나갈 수 있는 노드들을 모두 pq에 넣고 다익스트라를 한 번 돌리면,
+ * distance 배열에 모든 노드의 최소 탈출 시간이 구해진다.그럼 o(nlogn)이라 시간초과도 해결된다.
+ */
 class PriorityQueue {
     constructor() {
         this.heap = [];
@@ -48,7 +58,6 @@ class PriorityQueue {
 function dikstra(adjList, pq, distance) {
     while (pq.size() > 0) {
         const [min, current] = pq.pop();
-        // console.log(min, current);
 
         for (const [next, length] of adjList[current] ?? []) {
             if (distance[next] > min + length) {
@@ -83,12 +92,8 @@ const solution = () => {
             adjList[i - a[i - 1]].push([i, b[i - 1]]);
         }
     }
-    // console.log(adjList);
 
     dikstra(adjList, pq, distance);
     console.log(distance.slice(1).join(" "));
-
-
-
 };
 solution();
