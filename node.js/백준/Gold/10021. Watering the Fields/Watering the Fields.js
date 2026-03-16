@@ -43,7 +43,11 @@ class PriorityQueue {
         }
     }
 }
-
+/**
+ * 설명 : 이 문제 잘 해석해보면 최소거리가 아니고 최소신장트리이다. 그래서 최소신장트리를 사용하면 되는데 그렇다고 연결되는 값들을
+ * 인접리스트나 인접행렬로 넣어서 하면 메모리 초과가 난다. 그래서 이 문제는 굳이 넣지 않아도 0~N번까지 모두 접근해 만족하는 next만
+ * 넣어줄 수 있다. pq는 써도 되고 안써도 된다. (o(N^2)도 만족하므로)
+ */
 function prim(N, C, fields, pq, start) {
     const visited = new Array(N).fill(false);
     pq.push([0, start]);
