@@ -39,7 +39,9 @@ const solution = () => {
     // console.log(dp.join("\n"));
     for (let k = 0; k < N; k++) {
         for (let i = 0; i < N; i++) {
+            if (k === i) continue;
             for (let j = 0; j < N; j++) {
+                if (j === k || j === i) continue;
                 if (dp[i][k][2] === INF || dp[k][j][2] === INF) continue;
                 if (dp[i][j][2] > dp[i][k][2] + dp[k][j][2]) {
                     const minS = Math.min(dp[i][0], dp[j][0]);
