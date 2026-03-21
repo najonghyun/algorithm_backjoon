@@ -1,8 +1,11 @@
 const fs = require("fs");
 const filePath = process.platform === "linux" ? "/dev/stdin" : "./input.txt";
 const input = fs.readFileSync(filePath).toString().trim().split(/\r?\n/);
-const INF = Number.MAX_VALUE;
-
+/**
+ * 설명 : 이문제는 인접리스트를 만들고 cost라는 배열을 만들어서 각 노드에 최대 비용을 넣어주는 느낌으로 풀었다.
+ * 다익스트라와는 다르게 최대 소지비용을 넣었고, 만족할 때만 넣었다.
+ * 이게 다익스트라 느낌으로 푼거지 dfs로 푸는게 정석인 것 같다.
+ */
 function dijkstra(n, adjList, roomTypes, roomCosts) {
     const cost = new Array(n).fill(-1);
     const visited = new Array(n).fill(false);
@@ -51,10 +54,6 @@ const solution = () => {
             if (!adjList[i]) adjList[i] = [];
             adjList[i] = list.slice(2, list.length - 1).map((v) => Number(v - 1));
         }
-
-        // console.log(roomTypes);
-        // console.log(roomCosts);
-        // console.log(adjList);
 
         const cost = dijkstra(n, adjList, roomTypes, roomCosts);
         result.push(cost === -1 ? "No" : "Yes");
