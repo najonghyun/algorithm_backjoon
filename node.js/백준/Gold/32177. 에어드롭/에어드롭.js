@@ -1,7 +1,10 @@
 const fs = require("fs");
 const filePath = process.platform === "linux" ? "/dev/stdin" : "./input.txt";
 const input = fs.readFileSync(filePath).toString().trim().split(/\r?\n/);
-
+/**
+ * 설명 : N의 범위를 봤을 때 그냥 인접리스트 만들어서 되는 것만 넣고 이제 푸앙이부터 시작해서
+ * dfs로 다 한번씩 방문하면 해결된다. 정보가 푸앙이 포함 총 N+1개 인것만 주의하자
+ */
 function calculate(arr1, arr2) {
     const diffX = arr1[0] - arr2[0];
     const diffY = arr1[1] - arr2[1];
@@ -25,7 +28,6 @@ const solution = () => {
     for (let i = 1; i <= N + 1; i++) {
         info[i - 1] = input[i].split(" ").map(Number);
     }
-    // console.log(info);
 
     const adjList = {};
     for (let i = 0; i <= N; i++) {
@@ -39,7 +41,6 @@ const solution = () => {
             }
         }
     }
-    // console.log(adjList);
 
     const visited = new Array(N + 1).fill(false);
     visited[0] = true;
