@@ -81,9 +81,6 @@ const solution = () => {
         info[i] = [y, x, d];
         positions[y][x].push(i);
     }
-    // console.log(map.join("\n"));
-    // console.log(info);
-    // console.log(positions);
 
     const result = simulation(N, K, map, info, positions);
     console.log(result);
