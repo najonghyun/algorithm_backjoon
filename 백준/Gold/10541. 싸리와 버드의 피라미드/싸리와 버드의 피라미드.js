@@ -1,7 +1,11 @@
 const fs = require("fs");
 const filePath = process.platform === "linux" ? "/dev/stdin" : "./input.txt";
 const input = fs.readFileSync(filePath).toString().trim().split(/\r?\n/);
-
+/**
+ * 설명 : 이 문제는 시간초과 피하기 위해서 나눗셈의 몫과 나머지를 이용해서 풀었다. 이때 각 위치까지의 개수 합을 누적합 방식으로 미리 계산해서 푼다.
+ *
+ * + N의 size가 이미 10^(18)이므로 값을 계산하기 위해서는 BigInt를 사용해야 한다. 이때 BigInt는 자기들끼리만 연산이 가능하므로 주의해야 한다.
+ */
 const solution = () => {
     let index = 0;
     const N = Number(input[index++]);
@@ -17,7 +21,6 @@ const solution = () => {
         wordSum[i] = { ...wordSum[i - 1] };
         wordSum[i][word[i - 1]]++;
     }
-    // console.log(wordSum);
 
     const K = Number(input[index++]);
     const result = new Array(K).fill(0);
