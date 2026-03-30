@@ -4,7 +4,11 @@ const input = fs.readFileSync(filePath).toString().trim().split(/\r?\n/);
 const INF = Number.MAX_VALUE;
 const dirY = [-1, 1, 0, 0];
 const dirX = [0, 0, -1, 1];
-
+/**
+ * 설명 : bfs가 아닌 다익스트라(우선순위 큐)로 풀어야 한다. 하나하나를 노드로 보고 상하좌우로 경로이동한다.
+ * 이때 pq에 넣어놓고 각 위치를 dp로 저장해서 푼다. dp는 변신모드, 일반모드 나눠서 3차원으로 해야 한다. warps배열에는
+ * 상하좌우 각각의 최소 워프 좌표를 세팅해서 그것을 이용했다.
+ */
 class PriorityQueue {
     constructor() {
         this.heap = [];
