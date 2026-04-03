@@ -5,7 +5,10 @@ const dirY = [-1, 1, 0, 0];
 const dirX = [0, 0, 1, -1];
 const INF = Number.MAX_VALUE;
 let result;
-
+/**
+ * 설명 : N의 길이 그리고 선생님의 수가 매우 짧기도 하고 예외가 많으므로 재귀로 완전탐색을 해야 한다. 
+ * 몫과 나머지를 이용한 dfs 위치 잘 기억하자. 그리고 쭉가봐서 학생이 있을때 이제 x로 된곳이 후보이며 모두 방문해본다.
+ */
 function dfs(N, size, map, teachers, visited, now, cnt) {
     if (now === size * 4) {
         result = Math.min(result, cnt);
@@ -21,9 +24,6 @@ function dfs(N, size, map, teachers, visited, now, cnt) {
         const points = [];
         while (nextY < N && nextY >= 0 && nextX < N && nextX >= 0) {
             if (visited[nextY][nextX]) break;
-            if (cnt === 3) {
-                // console.log(visited);
-            }
             if (map[nextY][nextX] === "S") {
                 for (const [y, x] of points) {
                     visited[y][x] = true;
@@ -53,8 +53,6 @@ const solution = () => {
         }
     }
     const size = teachers.length;
-    // console.log(map);
-    // console.log(teachers);
     const visited = Array.from({ length: N }, () => new Array(N).fill(false));
     result = INF;
     dfs(N, size, map, teachers, visited, 0, 0);
