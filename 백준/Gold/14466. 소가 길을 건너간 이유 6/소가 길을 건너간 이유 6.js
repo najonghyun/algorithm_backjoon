@@ -3,6 +3,11 @@ const filePath = process.platform === "linux" ? "/dev/stdin" : "./input.txt";
 const input = fs.readFileSync(filePath).toString().trim().split(/\r?\n/);
 const dirY = [-1, 1, 0, 0];
 const dirX = [0, 0, -1, 1];
+/**
+ * 설명 : 길을 건너는 부분을 제외한 목초지 사이는 건널 수 있으므로 그부분을 bfs로 탐색하면서 영역을 나눴다.
+ * 그리고 각 소의 쌍마다 비교해서 풀었다.
+ * 제한시간 2초이므로 1억까지 가능한데 k <= 10000 이므로 o(k^(2))은 딱 1억이라 불필요한 연산만 없다면 가능하다.
+ */
 
 function bfs(N, map, visited, set, y, x, num) {
     const q = [];
