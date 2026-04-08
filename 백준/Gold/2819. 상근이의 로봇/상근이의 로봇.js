@@ -2,7 +2,11 @@ const fs = require("fs");
 const filePath = process.platform === "linux" ? "/dev/stdin" : "./input.txt";
 const input = fs.readFileSync(filePath).toString().trim().split(/\r?\n/);
 const dir = { S: [0, 1], J: [0, -1], I: [1, 0], Z: [-1, 0] };
-
+/**
+ * 설명 : 하나씩 보면 시간초과이므로 미리 합한 sum을 먼저 구한다.
+ * 조사점은 미리 x와 y별 오름차순 정렬을 해놓고, 옮길 때 마다 변한 x or y의 위치를 계산 후 그만큼 변했으므로
+ * 그값을 sum에서 더하거나 빼주는 식으로 해결했다.
+ */
 function lower_bound(N, list, target, isX) {
     const num = isX ? 0 : 1;
     let start = 0;
@@ -51,9 +55,6 @@ const solution = () => {
         if (a[0] === b[0]) return a[1] - b[1];
         return a[0] - b[0];
     });
-    // console.log(xSortList);
-    // console.log(ySortList);
-    // console.log(sum);
 
     let [nowX, nowY] = [0, 0];
     const command = input[index++].split("");
@@ -80,8 +81,6 @@ const solution = () => {
             sum -= temp;
             nowY += dir[command[c]][1];
         }
-        // console.log(nowX, nowY);
-        // console.log(sum);
         result[c] = sum;
     }
     console.log(result.join("\n"));
