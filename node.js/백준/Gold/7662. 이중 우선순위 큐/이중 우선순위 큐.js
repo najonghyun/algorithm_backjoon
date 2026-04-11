@@ -2,13 +2,17 @@ const fs = require("fs");
 const filePath = process.platform === "linux" ? "/dev/stdin" : "./input.txt";
 const data = fs.readFileSync(filePath, "utf8");
 let ptr = 0;
-
 const nextToken = () => {
     while (ptr < data.length && data.charCodeAt(ptr) <= 32) ptr++;
     let start = ptr;
     while (ptr < data.length && data.charCodeAt(ptr) > 32) ptr++;
     return data.slice(start, ptr);
 };
+/**
+ * 설명 : 각 최대 최소 우선순위큐를 만들어서 넣어주고 객체 집합으로 크게 하나의 공간을 체크하면서 
+ * 풀었다. 주의 : 입력 데이터가 너무 많으면 nextToken()으로 파일을 전체 불러오지 말고 부분씩만 불러와서 사용해야
+ * 메모리를 아낄 수 있다.
+ */
 
 class MinPriorityQueue {
     constructor() {
@@ -84,21 +88,20 @@ class MaxPriorityQueue {
         let i = 0;
         const n = this.size();
         while (true) {
-            let min = i;
+            let max = i;
             let left = i * 2 + 1;
             let right = i * 2 + 2;
-            if (left < n && this.heap[min] < this.heap[left]) min = left;
-            if (right < n && this.heap[min] < this.heap[right]) min = right;
-            if (i == min) break;
+            if (left < n && this.heap[max] < this.heap[left]) max = left;
+            if (right < n && this.heap[max] < this.heap[right]) max = right;
+            if (i == max) break;
 
-            [this.heap[min], this.heap[i]] = [this.heap[i], this.heap[min]];
-            i = min;
+            [this.heap[max], this.heap[i]] = [this.heap[i], this.heap[max]];
+            i = max;
         }
     }
 }
 
 const solution = () => {
-    let index = 0;
     const T = Number(nextToken());
     const result = new Array(T);
     for (let t = 0; t < T; t++) {
