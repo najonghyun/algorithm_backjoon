@@ -22,9 +22,7 @@ class MinPriorityQueue {
         this._up();
     }
     pop() {
-        if (this.size() === 0) return null;
         if (this.size() === 1) return this.heap.pop();
-
         const root = this.heap[0];
         this.heap[0] = this.heap.pop();
         this._down();
@@ -46,17 +44,15 @@ class MinPriorityQueue {
             let min = i;
             let left = i * 2 + 1;
             let right = i * 2 + 2;
-
             if (left < n && this.heap[min] > this.heap[left]) min = left;
             if (right < n && this.heap[min] > this.heap[right]) min = right;
-            if (i === min) break;
+            if (i == min) break;
 
             [this.heap[min], this.heap[i]] = [this.heap[i], this.heap[min]];
             i = min;
         }
     }
 }
-
 class MaxPriorityQueue {
     constructor() {
         this.heap = [];
@@ -69,9 +65,7 @@ class MaxPriorityQueue {
         this._up();
     }
     pop() {
-        if (this.size() === 0) return null;
         if (this.size() === 1) return this.heap.pop();
-
         const root = this.heap[0];
         this.heap[0] = this.heap.pop();
         this._down();
@@ -90,93 +84,82 @@ class MaxPriorityQueue {
         let i = 0;
         const n = this.size();
         while (true) {
-            let max = i;
+            let min = i;
             let left = i * 2 + 1;
             let right = i * 2 + 2;
+            if (left < n && this.heap[min] < this.heap[left]) min = left;
+            if (right < n && this.heap[min] < this.heap[right]) min = right;
+            if (i == min) break;
 
-            if (left < n && this.heap[max] < this.heap[left]) max = left;
-            if (right < n && this.heap[max] < this.heap[right]) max = right;
-            if (i === max) break;
-
-            [this.heap[max], this.heap[i]] = [this.heap[i], this.heap[max]];
-            i = max;
+            [this.heap[min], this.heap[i]] = [this.heap[i], this.heap[min]];
+            i = min;
         }
     }
 }
 
-const cleanMax = (pqMax, count) => {
-    while (pqMax.size() > 0) {
-        const top = pqMax.heap[0];
-        if ((count.get(top) || 0) > 0) break;
-        pqMax.pop();
-    }
-};
-
-const cleanMin = (pqMin, count) => {
-    while (pqMin.size() > 0) {
-        const top = pqMin.heap[0];
-        if ((count.get(top) || 0) > 0) break;
-        pqMin.pop();
-    }
-};
-
 const solution = () => {
+    let index = 0;
     const T = Number(nextToken());
     const result = new Array(T);
-
     for (let t = 0; t < T; t++) {
         const pqMax = new MaxPriorityQueue();
         const pqMin = new MinPriorityQueue();
-        const count = new Map();
+        const set = {};
         let size = 0;
-
         const K = Number(nextToken());
-
         for (let k = 0; k < K; k++) {
             const command = nextToken();
             const num = Number(nextToken());
-
-            if (command === "I") {
+            if (command === 'I') {
                 pqMax.push(num);
                 pqMin.push(num);
-                count.set(num, (count.get(num) || 0) + 1);
+                if (!set[num]) set[num] = 0;
+                set[num]++;
                 size++;
-            } else {
+            } else if (command === 'D') {
                 if (size === 0) continue;
-
                 if (num === 1) {
-                    cleanMax(pqMax, count);
-                    const max = pqMax.pop();
-                    if (max !== null) {
-                        count.set(max, count.get(max) - 1);
-                        size--;
+                    while (pqMax.size() > 0) {
+                        const max = pqMax.pop();
+                        if (set[max] && set[max] > 0) {
+                            set[max]--;
+                            size--;
+                            break;
+                        }
                     }
-                } else {
-                    cleanMin(pqMin, count);
-                    const min = pqMin.pop();
-                    if (min !== null) {
-                        count.set(min, count.get(min) - 1);
-                        size--;
+                } else if (num === -1) {
+                    while (pqMin.size() > 0) {
+                        const min = pqMin.pop();
+                        if (set[min] && set[min] > 0) {
+                            set[min]--;
+                            size--;
+                            break;
+                        }
                     }
-                }
-
-                if (size === 0) {
-                    pqMax.heap = [];
-                    pqMin.heap = [];
-                    count.clear();
                 }
             }
         }
-
-        if (size === 0) {
-            result[t] = "EMPTY";
-        } else {
-            cleanMax(pqMax, count);
-            cleanMin(pqMin, count);
-            result[t] = `${pqMax.heap[0]} ${pqMin.heap[0]}`;
+        if (size === 0) result[t] = "EMPTY";
+        else {
+            let maxNum = -1;
+            while (pqMax.size() > 0) {
+                const temp = pqMax.pop();
+                if (set[temp] && set[temp] > 0) {
+                    maxNum = temp;
+                    break;
+                }
+            }
+            let minNum = -1;
+            while (pqMin.size() > 0) {
+                const temp = pqMin.pop();
+                if (set[temp] && set[temp] > 0) {
+                    minNum = temp;
+                    break;
+                }
+            }
+            result[t] = `${maxNum} ${minNum}`
         }
     }
-
     console.log(result.join("\n"));
 };
 
