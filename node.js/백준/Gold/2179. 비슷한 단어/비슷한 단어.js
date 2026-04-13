@@ -1,7 +1,11 @@
 const fs = require("fs");
 const filePath = process.platform === "linux" ? "/dev/stdin" : "./input.txt";
 const input = fs.readFileSync(filePath).toString().trim().split(/\r?\n/);
-
+/**
+ * 설명 : 그냥 비교하면 시간초과 나기 때문에 정렬을 하고 비교해야 한다. 이때 먼저 최대 접두사 개수를 구하고 
+ * 다시 돌면서 최대 개수가 존재하는 각 범위를 구하고 그안에서 첫번째값 두번째값을 계산한다. 이유는 같은 범위 내에서만 쌍 출력이
+ * 가능 하기 때문이다. 그리고 원래 순서 값을 같이 넣어서 여러개 있을때는 그 순서의 idx로 우선순위를 계산한다. 
+ */
 const solution = () => {
     const N = Number(input[0]);
     const list = new Array(N);
@@ -11,7 +15,6 @@ const solution = () => {
     list.sort((a, b) => {
         return a[0].localeCompare(b[0]);
     });
-    // console.log(list);
 
     let max = 0;
     const maxArr = new Array(N).fill(0);
@@ -28,7 +31,6 @@ const solution = () => {
         max = Math.max(max, count);
     }
 
-    // console.log(maxArr);
     let result1 = null,
         result2 = null;
     let min1 = Number.MAX_VALUE;
