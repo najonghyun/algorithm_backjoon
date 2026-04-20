@@ -1,3 +1,8 @@
+/**
+* 설명 : 우선순위 큐에 담아서 사용하고 이때 시간은 while문으로 한 작업씩 관리하고 
+* 이때 큐에 아무것도 없을때는 시간 뛰기를 해야한다.
+*/
+
 class PriorityQueue{
     constructor(){
         this.heap = [];
